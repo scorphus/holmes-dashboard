@@ -25,14 +25,16 @@ SCHEDULER.every '2s' do
     send_event('materials', {items: materials.values})
 
     all_keys = redis.keys('*')
-    locks = all_keys.find_all { |key| key =~ /.+-_LOCK_/ }
+    # locks = all_keys.find_all { |key| key =~ /.+-_LOCK_/ }
 
-    locked_materials = Hash.new({ value: 0 })
-    for lock in locks
-        lock_ttl = redis.ttl(lock)
-        locked_materials[lock] = {label: lock.gsub(/(.+)-_LOCK_/, '\1'), value:lock_ttl}
+    locks = Hash.new({ value: 0 })
+    for key in all_keys
+        if key =~ /.+-_LOCK_/
+            key_ttl = redis.ttl(key)
+            locks[key] = {label: key.gsub(/(.+)-_LOCK_/, '\1'), value:key_ttl}
+        end
     end
 
-    send_event('locked_materials', {items: locked_materials.values})
+    send_event('locks', {items: locks.values})
 
 end
