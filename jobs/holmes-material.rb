@@ -4,7 +4,7 @@ materials = Hash.new({ value: 0 })
 
 redis = Redis.new(:host => '10.11.165.8', :port => 49153)
 
-SCHEDULER.every '2s' do
+SCHEDULER.every '5s' do
 
     domains_details_ttl = redis.ttl('domains_details')
     violation_count_for_domains_ttl = redis.ttl('violation_count_for_domains')
