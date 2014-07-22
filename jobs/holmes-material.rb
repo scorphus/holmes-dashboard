@@ -1,7 +1,5 @@
 require 'redis'
 
-materials = Hash.new({ value: 0 })
-
 redis = Redis.new(:host => '10.11.165.8', :port => 49153)
 
 SCHEDULER.every '5s' do
