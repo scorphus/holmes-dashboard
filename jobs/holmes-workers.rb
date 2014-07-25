@@ -6,7 +6,7 @@ grapher_url = 'http://datacenter.globoi.com/grapher.cgi?target=%2Fservers%2Flinu
 bits_in_out = []
 x_index = 0
 
-SCHEDULER.every '5m' do
+SCHEDULER.every '5m', first_in: 0, allow_overlapping: false do
     grapher = Nokogiri::HTML(open(grapher_url))
     tds = grapher.xpath('.//td[contains(.,"Average bits out")]')
 
